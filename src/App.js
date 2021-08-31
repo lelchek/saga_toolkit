@@ -1,23 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchPeople } from "./redux/people";
+import People from "./components/People/People";
+import Planets from "./components/Planets/Planets";
+import { getIsLoading, getError } from "./redux/common";
 
 function App() {
+  const dispatch = useDispatch();
+  const isLoading = useSelector(getIsLoading);
+  const error = useSelector(getError);
+
+  useEffect(() => {
+    dispatch(fetchPeople());
+  }, [dispatch]);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      Saga & Toolkit
+      {isLoading && <p>Loading...</p>}
+      {error && <p>Ups.. {error}</p>}
+      <People />
+      <Planets />
     </div>
   );
 }
